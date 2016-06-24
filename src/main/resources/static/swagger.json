@@ -1,0 +1,91 @@
+{
+    "swagger": "2.0",
+    "info": {
+        "version": "1.0.0",
+        "title": "Communication Center API"
+    },
+    "basePath": "/api",
+    "tags": [
+        {
+            "name": "communication-center-send-sms-transactional"
+        }
+    ],
+    "schemes": [
+        "http"
+    ],
+    "paths": {
+        "/v1/sendSms/transactional": {
+            "post": {
+                "tags": [
+                    "communication-center-send-sms-transactional"
+                ],
+                "summary": "Send a sms",
+                "description": "",
+                "operationId": "SendSms",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "parameters": [
+                    {
+                        "in": "body",
+                        "name": "body",
+                        "required": false,
+                        "schema": {
+                            "$ref": "#/definitions/SendSmsInput"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success OK"
+                    },
+                    "400": {
+                        "description": "Bad request. Check the body for messages",
+                        "schema": {
+                            "$ref": "#/definitions/Message"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal server error"
+                    }
+                }
+            }
+        }
+    },
+    "definitions": {
+        "Message": {
+            "required": [
+                "messages"
+            ],
+            "type": "object",
+            "properties": {
+                "messages": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                }
+            }
+        },
+        "SendSmsInput": {
+            "type": "object",
+            "required": [
+                "orderId",
+                "status"
+            ],
+            "properties": {
+                "status": {
+                    "description": "Order Status",
+                    "type": "string"
+                },
+                "orderId": {
+                    "type": "string",
+                    "description": "Order Id"
+                }
+            }
+        }
+    }
+}

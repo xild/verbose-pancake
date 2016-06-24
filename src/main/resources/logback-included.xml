@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<included scan="true" scanPeriod="30 seconds">
+	<contextListener class="ch.qos.logback.classic.jul.LevelChangePropagator">
+		<resetJUL>true</resetJUL>
+	</contextListener>
+
+	<!-- To enable JMX Management -->
+	<jmxConfigurator />
+
+	<appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+		<layout class="ch.qos.logback.classic.PatternLayout">
+			<Pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} %5p ${PID:- } --- [%t] %-40.40logger{39} : %m%n%wex</Pattern>
+		</layout>
+	</appender>
+
+
+	<logger name="org.hibernate" level="INFO" />
+	<logger name="org.hibernate.type" level="TRACE" />
+	<logger name="org.springframework" level="INFO" />
+	<logger name="org.springframework.transaction" level="INFO" />
+	<logger name="org.springframework.security" level="INFO" />
+	<logger name="org.springframework.web.servlet.mvc" level="INFO" />
+	<logger name="com.mchange" level="INFO" />
+
+	<root level="ALL">
+		<appender-ref ref="STDOUT" />
+	</root>
+</included>

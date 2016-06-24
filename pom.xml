@@ -17,17 +17,8 @@
 
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-		<start-class>com.walmart.commcenter.api.Application</start-class>
+		<start-class>com.github.xild.verbose.Application</start-class>
 		<java.version>1.8</java.version>
-
-		<!-- Sonar -->
-		<sonar.core.codeCoveragePlugin>jacoco</sonar.core.codeCoveragePlugin>
-		<sonar.language>java</sonar.language>
-		<sonar.projectName>commcenter/api</sonar.projectName>
-		<sonar.fortify.reportPath>${project.name}-${project.version}.fpr</sonar.fortify.reportPath>
-		<sonar.jacoco.excludes>
-			com/walmart/commcenter/api/config/*.java
-		</sonar.jacoco.excludes>
 	</properties>
 
 	<parent>

@@ -29,10 +29,10 @@ public class Address implements com.github.xild.verbose.pancake.model.Entity {
 	private String state;
 	
 	@Column(name = "ADDRESS_NUMBER", nullable = false)
-	private String addressNumber;
+	private Long addressNumber;
 
-	@Column(name = "cep", nullable = false, length=5)
-	private Integer cep;
+	@Column(name = "ZIP_CODE", nullable = false)
+	private String zipCode;
 	
 	@Column(name = "address_detail")
 	private String addressDetail;
@@ -76,20 +76,12 @@ public class Address implements com.github.xild.verbose.pancake.model.Entity {
 		this.state = state;
 	}
 
-	public String getAddressNumber() {
+	public Long getAddressNumber() {
 		return addressNumber;
 	}
 
-	public void setAddressNumber(String addressNumber) {
+	public void setAddressNumber(Long addressNumber) {
 		this.addressNumber = addressNumber;
-	}
-
-	public Integer getCep() {
-		return cep;
-	}
-
-	public void setCep(Integer cep) {
-		this.cep = cep;
 	}
 
 	public String getAddressDetail() {
@@ -106,6 +98,21 @@ public class Address implements com.github.xild.verbose.pancake.model.Entity {
 
 	public void setNeighborhood(String neighborhood) {
 		this.neighborhood = neighborhood;
+	}
+
+	public String getZipCode() {
+		return zipCode;
+	}
+
+	public void setZipCode(String zipCode) {
+		this.zipCode = zipCode;
+	}
+
+	@Override
+	public String toString() {
+		return "Address [id=" + id + ", street=" + street + ", city=" + city + ", state=" + state + ", addressNumber="
+				+ addressNumber + ", zipCode=" + zipCode + ", addressDetail=" + addressDetail + ", neighborhood="
+				+ neighborhood + "]";
 	}
 
 }

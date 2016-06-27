@@ -9,6 +9,8 @@ import javax.persistence.Id;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
+import com.github.xild.verbose.pancake.model.to.AddressInput;
+
 @Entity(name = "Address")
 @Table(name = "ADDRESS")
 @SequenceGenerator(name = "SEQ_ADDRESS", sequenceName = "SEQ_ADDRESS", initialValue = 1, allocationSize = 1)
@@ -24,16 +26,16 @@ public class Address implements com.github.xild.verbose.pancake.model.Entity {
 
 	@Column(name = "CITY", nullable = false)
 	private String city;
-	
+
 	@Column(name = "STATE", nullable = false)
 	private String state;
-	
+
 	@Column(name = "ADDRESS_NUMBER", nullable = false)
-	private Long addressNumber;
+	private String addressNumber;
 
 	@Column(name = "ZIP_CODE", nullable = false)
 	private String zipCode;
-	
+
 	@Column(name = "address_detail")
 	private String addressDetail;
 
@@ -43,6 +45,18 @@ public class Address implements com.github.xild.verbose.pancake.model.Entity {
 	public Address() {
 		super();
 	}
+
+	public Address(AddressInput input) {
+		super();
+		this.street = input.getRua();
+		this.city = input.getCidade();
+		this.state = input.getEstado();
+		this.addressNumber = input.getNumero();
+		this.zipCode = input.getCep();
+		this.addressDetail = input.getComplemento();
+		this.neighborhood = input.getBairro();
+	}
+
 
 	public Long getId() {
 		return id;
@@ -76,11 +90,11 @@ public class Address implements com.github.xild.verbose.pancake.model.Entity {
 		this.state = state;
 	}
 
-	public Long getAddressNumber() {
+	public String getAddressNumber() {
 		return addressNumber;
 	}
 
-	public void setAddressNumber(Long addressNumber) {
+	public void setAddressNumber(String addressNumber) {
 		this.addressNumber = addressNumber;
 	}
 

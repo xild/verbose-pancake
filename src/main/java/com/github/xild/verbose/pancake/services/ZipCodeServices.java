@@ -6,6 +6,8 @@
  */
 package com.github.xild.verbose.pancake.services;
 
+import java.util.Optional;
+
 import com.github.xild.verbose.pancake.model.Address;
 
 /**
@@ -15,7 +17,7 @@ import com.github.xild.verbose.pancake.model.Address;
 public interface ZipCodeServices {
 	/**
 	 * @param zipCode
-	 * @return 
+	 * @return
 	 */
-	Address searchZipCode(String zipCode);
+	Optional<Address> searchZipCode(String zipCode);
 }

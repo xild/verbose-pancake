@@ -6,6 +6,10 @@
  */
 package com.github.xild.verbose.pancake.services.impl;
 
+import java.util.Optional;
+
+import javax.inject.Inject;
+
 import org.springframework.stereotype.Service;
 
 import com.github.xild.verbose.pancake.model.Address;
@@ -13,22 +17,35 @@ import com.github.xild.verbose.pancake.repository.AddressRepository;
 import com.github.xild.verbose.pancake.services.ZipCodeServices;
 
 /**
- * @author Luis Vieira 
+ * @author Luis Vieira
  *
  */
 @Service
 public class ZipCodeServicesImpl implements ZipCodeServices {
-	
+
 	private AddressRepository addressRepository;
 
-	public ZipCodeServicesImpl(AddressRepository addressRepository){
+	@Inject
+	public ZipCodeServicesImpl(AddressRepository addressRepository) {
 		this.addressRepository = addressRepository;
 	}
 
 	@Override
-	public Address searchZipCode(String zipCode) {
-		return addressRepository.findByZipCode(zipCode);
-	}
+	public Optional<Address> searchZipCode(String zipCode) {
+		Optional<Address> address = Optional.empty();
+		int zipLength = zipCode.length() - 1;
+		
+		for (int position = zipLength; position >= -1; position--) {
+			address = addressRepository.findByZipCode(zipCode);
+			if (address.isPresent() || position == -1) {
+				return address;
+			}
 
-	
+			StringBuilder sb = new StringBuilder(String.valueOf(zipCode));
+			sb.replace(position, position + 1, "0");
+			zipCode = sb.toString();
+		}
+
+		return address;
+	}
 }

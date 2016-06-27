@@ -28,6 +28,7 @@ public class JerseyConfiguration extends ResourceConfig {
     private void registerEndpoints() {
     	register(AddressResource.class);
     	register(HealthCheckResource.class);
+        register(JacksonJaxbJsonProvider.class);
     }
 
 }

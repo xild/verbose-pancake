@@ -6,6 +6,8 @@
  */
 package com.github.xild.verbose.pancake.repository;
 
+import java.util.Optional;
+
 import org.springframework.data.repository.PagingAndSortingRepository;
 
 import com.github.xild.verbose.pancake.model.Address;
@@ -18,8 +20,14 @@ public interface AddressRepository extends PagingAndSortingRepository<Address, L
 
 	/**
 	 * @param zipCode
-	 * @return
+	 * @return Optional of Address
 	 */
-	Address findByZipCode(String zipCode);
+	Optional<Address> findByZipCode(String zipCode);
+	
+	/**
+	 * @param zipCode
+	 * @return Optional of Address
+	 */
+	Optional<Address> findById(Long id);
 
 }

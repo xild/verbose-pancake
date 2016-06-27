@@ -1,91 +1,245 @@
 {
-    "swagger": "2.0",
-    "info": {
-        "version": "1.0.0",
-        "title": "Communication Center API"
-    },
-    "basePath": "/api",
-    "tags": [
-        {
-            "name": "communication-center-send-sms-transactional"
-        }
-    ],
-    "schemes": [
-        "http"
-    ],
-    "paths": {
-        "/v1/sendSms/transactional": {
-            "post": {
-                "tags": [
-                    "communication-center-send-sms-transactional"
-                ],
-                "summary": "Send a sms",
-                "description": "",
-                "operationId": "SendSms",
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "parameters": [
-                    {
-                        "in": "body",
-                        "name": "body",
-                        "required": false,
-                        "schema": {
-                            "$ref": "#/definitions/SendSmsInput"
-                        }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "Success OK"
-                    },
-                    "400": {
-                        "description": "Bad request. Check the body for messages",
-                        "schema": {
-                            "$ref": "#/definitions/Message"
-                        }
-                    },
-                    "500": {
-                        "description": "Internal server error"
-                    }
-                }
-            }
-        }
-    },
-    "definitions": {
-        "Message": {
-            "required": [
-                "messages"
-            ],
-            "type": "object",
-            "properties": {
-                "messages": {
-                    "type": "array",
-                    "items": {
-                        "type": "string"
-                    }
-                }
-            }
-        },
-        "SendSmsInput": {
-            "type": "object",
-            "required": [
-                "orderId",
-                "status"
-            ],
-            "properties": {
-                "status": {
-                    "description": "Order Status",
-                    "type": "string"
-                },
-                "orderId": {
-                    "type": "string",
-                    "description": "Order Id"
-                }
-            }
-        }
+	"swagger": "2.0",
+	"info": {
+		"version": "1.0.0",
+		"title": "Api de Endereço e CEP"
+	},
+	"basePath": "/api",
+	"tags": [{
+		"name": "busca-cep"
+	},{
+        "name": "endereço"
     }
+    ],
+	"schemes": [
+		"http"
+	],
+	"paths": {
+		"/buscaCep/{cep}": {
+			"get": {
+				"tags": [
+					"busca-cep"
+				],
+				"summary": "Busca um endereco a partir de um dado cep",
+				"description": "",
+				"operationId": "buscaCep",
+				"consumes": [
+					"application/json"
+				],
+				"produces": [
+					"application/json"
+				],
+				"parameters": [{
+					"name": "cep",
+					"in": "path",
+					"description": "CEP",
+					"required": true,
+					"type": "String",
+					"format": "int64"
+				}],
+				"responses": {
+					"200": {
+						"description": "Success OK",
+						"schema": {
+							"$ref": "#/definitions/Response"
+						}
+					},
+					"204": {
+						"description": "Not Found"
+					},
+					"400": {
+						"description": "Bad Request",
+						"schema": {
+							"$ref": "#/definitions/Response"
+						}
+					},
+					"500": {
+						"description": "Internal server error"
+					}
+				}
+			}
+		},
+        "/address/{id}": {
+			"get": {
+				"tags": [
+					"endereço"
+				],
+				"summary": "Busca um endereco a partir de um ID ",
+				"description": "",
+				"operationId": "buscaEndereco",
+				"consumes": [
+					"application/json"
+				],
+				"produces": [
+					"application/json"
+				],
+				"parameters": [{
+					"name": "id",
+					"in": "path",
+					"description": "ID do endereço",
+					"required": true,
+					"type": "String",
+					"format": "int64"
+				}],
+				"responses": {
+					"200": {
+						"description": "Success OK",
+						"schema": {
+							"$ref": "#/definitions/AdderssOutput"
+						}
+					},
+					"204": {
+						"description": "Not Found"
+					},
+					"400": {
+						"description": "Bad Request",
+						"schema": {
+							"$ref": "#/definitions/Response"
+						}
+					},
+					"500": {
+						"description": "Internal server error"
+					}
+				}
+			}
+		},
+        "/address/": {
+			"post": {
+				"tags": [
+				    "endereço"
+				],
+				"summary": "Salva um endereço e confirma o CEP digitado",
+				"description": "",
+				"operationId": "address post",
+				"consumes": [
+					"application/json"
+				],
+				"produces": [
+					"application/json"
+				],
+				"parameters": [{
+					"in": "body",
+                        "name": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/AddressInput"
+                        }
+				}],
+				"responses": {
+					"200": {
+						"description": "Success OK",
+						"schema": {
+							"$ref": "#/definitions/AdderssOutput"
+						}
+					},
+					"204": {
+						"description": "Not Found"
+					},
+					"400": {
+						"description": "Bad Request",
+						"schema": {
+							"$ref": "#/definitions/Response"
+						}
+					},
+					"500": {
+						"description": "Internal server error"
+					}
+				}
+			}
+		}
+	},
+	"definitions": {
+		"Message": {
+			"required": [
+				"messages"
+			],
+			"type": "object",
+			"properties": {
+				"messages": {
+					"type": "array",
+					"items": {
+						"type": "string"
+					}
+				}
+			}
+		},
+		"AdderssOutput": {
+			"type": "object",
+			"required": [
+				"rua",
+				"bairro",
+				"cidade",
+				"estado",
+                "complemento",
+                "numero",
+                "cep"
+			],
+			"properties": {
+				"rua": {
+					"description": "Nome da rua",
+					"type": "string"
+				},
+				"bairro": {
+					"type": "string",
+					"description": "Nome do bairro"
+				},
+				"cidade": {
+					"type": "string",
+					"description": "Nome d cidade"
+				},
+				"estado": {
+					"type": "string",
+					"description": "Nome do estado"
+				},
+                "complemento": {
+                    "type" : "string",
+                    "description":"Complemento do endereço, ex: apto 13"
+                },
+                  "CEP": {
+                    "type" : "string",
+                    "description":"Código postal do endereço"
+                }
+
+			}
+		},
+        	"AddressInput": {
+			"type": "object",
+			"required": [
+				"rua",
+				"bairro",
+				"cidade",
+				"estado",
+                "complemento",
+                "numero",
+                "cep"
+			],
+			"properties": {
+				"rua": {
+					"description": "Nome da rua",
+					"type": "string"
+				},
+				"bairro": {
+					"type": "string",
+					"description": "Nome do bairro"
+				},
+				"cidade": {
+					"type": "string",
+					"description": "Nome d cidade"
+				},
+				"estado": {
+					"type": "string",
+					"description": "Nome do estado"
+				},
+                "complemento": {
+                    "type" : "string",
+                    "description":"Complemento do endereço, ex: apto 13"
+                },
+                  "CEP": {
+                    "type" : "string",
+                    "description":"Código postal do endereço"
+                }
+
+			}
+		}
+	}
 }

@@ -1,3 +1,4 @@
+[![Build Status](https://travis-ci.org/xild/verbose-pancake.svg?branch=master)](https://travis-ci.org/xild/verbose-pancake)
 # verbose-pancake
 # LIBS
  Springboot + Spring data + Feign + Mockito + Benas-Generate Random Beans
@@ -31,3 +32,112 @@
     - 55556666
     - 55550000
     - 77770000
+
+# BUSCA UM ENDEREÇO COM UM CEP VÁLIDO 
+  ```
+ curl -X GET --header "Accept: application/json" --header "X-User: swagger" "http://localhost:8082/api/buscaCep/77770000"
+ {
+  "id": 10,
+  "rua": "Rua 77770000",
+  "cidade": "SP",
+  "estado": "SP",
+  "numero": "88",
+  "bairro": "jaguare",
+  "complemento": "sem complemento"
+} 
+``` 
+# BUSCA UM ENDEREÇO VÁLIDO PASSANDO UM CEP INVÁLIDO 
+  ```
+ curl -X GET --header "Accept: application/json" --header "X-User: swagger" "http://localhost:8082/api/buscaCep/77771111"
+ {
+  "id": 10,
+  "rua": "Rua 77770000",
+  "cidade": "SP",
+  "estado": "SP",
+  "numero": "88",
+  "bairro": "jaguare",
+  "complemento": "sem complemento"
+} 
+``` 
+# BUSCA ENDEREÇO COM CEP INVÁLIDO
+````
+curl -X GET --header "Accept: application/json" --header "X-User: swagger" "http://localhost:8082/api/buscaCep/32132456"
+{
+  "error": "NOT_FOUND",
+  "message": "Cep Inválido",
+  "httpStatus": 404,
+  "errors": "NOT_FOUND"
+}
+```
+
+# CADASTRA UM ENDEREÇO
+```
+curl -X POST --header "Content-Type: application/json" --header "Accept: application/json" --header "X-User: swagger" -d "{
+  \"rua\": \"rua da ns\",
+  \"bairro\": \"vergueiro\",
+  \"cidade\": \"SP\",
+  \"estado\": \"SP\",
+  \"complemento\": \"durden\",
+  \"cep\": \"77770000\",
+  \"numero\": \"253\"
+}" "http://localhost:8082/api/address/"
+{
+  "id": 11,
+  "rua": "rua da ns",
+  "cidade": "SP",
+  "estado": "SP",
+  "numero": "253",
+  "cep": "77770000",
+  "bairro": "vergueiro",
+  "complemento": "durden"
+}
+```
+# ATUALIZAR UM ENDEREÇO
+``` 
+curl -X PUT --header "Content-Type: application/json" --header "Accept: application/json" --header "X-User: swagger" -d "{
+  \"id\": 11,
+  \"rua\": \"rua da nao\",
+  \"cidade\": \"SP\",
+  \"estado\": \"SP\",
+  \"numero\": \"253\",
+  \"cep\": \"77770000\",
+  \"bairro\": \"vergueiro\",
+  \"complemento\": \"durdem\"
+}" "http://localhost:8082/api/address/"
+
+{
+  "id": 11,
+  "rua": "rua da nao",
+  "cidade": "SP",
+  "estado": "SP",
+  "numero": "253",
+  "cep": "77770000",
+  "bairro": "vergueiro",
+  "complemento": "durdem"
+}
+```
+
+# DELETAR UM ENDEREÇO
+
+``` 
+curl -X DELETE --header "Accept: application/json" --header "X-User: swagger" "http://localhost:8082/api/address/11"
+
+no content
+```
+
+# BUSCAR UM ENDEREÇO
+``` 
+curl -X GET --header "Accept: application/json" --header "X-User: swagger" "http://localhost:8082/api/address/1" 
+{
+  "id": 1,
+  "rua": "Rua A",
+  "cidade": "SP",
+  "estado": "SP",
+  "numero": "253",
+  "cep": "11703558",
+  "bairro": "tupi",
+  "complemento": "253"
+}
+``` 
+
+

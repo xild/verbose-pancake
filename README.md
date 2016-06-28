@@ -4,9 +4,9 @@
  Springboot + Spring data + Feign + Mockito + Benas-Generate Random Beans
 # WHY
 
- Simples aplicação com H2DB e alguns ceps que já são inseridos no boot da app. A aplicação responde serviços rests, como a segunda questão falava de 'consultar o serviço de cep' para validar. Utilizei o feign para demonstrar a utilização de um client declarativo que é o Feign.
+ Simples aplicação com H2DB e alguns ceps que já são inseridos no boot da app. A aplicação responde serviços rests, como a segunda questão falava de 'consultar o serviço de cep' para validar. Utilizei o feign para demonstrar o desenvolvimento de um client http.
  
- Como se trata de um microservices fiz a configuração do Dockerfile. O ideal é um docker-compose com um nginx na frente de 2 containers fazendo HA, está demonstrado. 
+ Como se trata de um microservices fiz a configuração do Dockerfile caso queira migrar para algo de alta disponibilidade com um orquestrator de containers, loadbalances e afins.
  
  
 # TESTES

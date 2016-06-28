@@ -55,6 +55,9 @@ public class ZipCodeResoure {
 		if (optionalAddress.isPresent()) {
 			Address address = optionalAddress.get();
 			AddressOutput output = new AddressOutput.Builder() //
+					.id(address.getId())//
+					.numero(address.getAddressNumber())//
+					.complemento(address.getAddressDetail())
 					.bairro(address.getNeighborhood()) //
 					.cidade(address.getCity())//
 					.estado(address.getState())//

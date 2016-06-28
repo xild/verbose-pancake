@@ -10,7 +10,7 @@ import java.util.Optional;
 
 import com.github.xild.verbose.pancake.exception.AddressResourceException;
 import com.github.xild.verbose.pancake.model.Address;
-import com.github.xild.verbose.pancake.model.to.AddressInput;
+import com.github.xild.verbose.pancake.model.to.AddressTO;
 
 /** 
  * @author Luis Vieira 
@@ -30,5 +30,7 @@ public interface AddressServices {
 	 * @param input
 	 * @return a Representation of Address in database
 	 */
-	Address saveAddress(AddressInput input);
+	Address saveAddress(AddressTO input);
+
+	Address updateAddress(AddressTO input) throws AddressResourceException;
 }

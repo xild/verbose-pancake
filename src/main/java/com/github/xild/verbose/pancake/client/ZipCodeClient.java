@@ -1,6 +1,6 @@
 package com.github.xild.verbose.pancake.client;
 
-import javax.ws.rs.core.Response;
+import com.github.xild.verbose.pancake.model.to.AddressOutput;
 
 import feign.Param;
 import feign.RequestLine;
@@ -8,5 +8,5 @@ import feign.RequestLine;
 public interface ZipCodeClient {
 
     @RequestLine("GET /buscaCep/{cep}")
-    Response findAddress(@Param("cep") String cep);
+    AddressOutput findAddress(@Param("cep") String cep);
 }

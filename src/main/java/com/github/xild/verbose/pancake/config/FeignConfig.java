@@ -11,12 +11,16 @@ import org.apache.http.impl.conn.PoolingHttpClientConnectionManager;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpStatus;
 
 import com.github.xild.verbose.pancake.client.ZipCodeClient;
+import com.github.xild.verbose.pancake.exception.ZipCodeInvalidException;
 
 import feign.Feign;
+import feign.FeignException;
 import feign.Logger.Level;
 import feign.Request.Options;
+import feign.Response;
 import feign.Retryer;
 import feign.httpclient.ApacheHttpClient;
 import feign.jackson.JacksonDecoder;
@@ -63,6 +67,13 @@ public class FeignConfig {
 		return builder//
 				.client(new ApacheHttpClient(httpClient)) //
 				.logLevel(Level.FULL) //
+				.errorDecoder((String methodKey, Response response) -> {
+					if (response.status() == HttpStatus.NOT_FOUND.value()) {
+						return new ZipCodeInvalidException(methodKey, response);
+
+					}
+					return FeignException.errorStatus(methodKey, response);
+				})
 				// disable retryer!
 				.retryer(new Retryer.Default(0, 0, 0)) //
 				.encoder(new JacksonEncoder())//
@@ -74,3 +85,4 @@ public class FeignConfig {
 		pools.forEach(p -> p.close());
 	}
 }
+

@@ -6,15 +6,20 @@
  */
 package com.github.xild.verbose.pancake.model.to;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
  * @author Luis Vieira
  *
  */
+@JsonInclude(JsonInclude.Include.NON_EMPTY)
 public class AddressOutput implements TransferObject {
 
 	private static final long serialVersionUID = 8870027544757295266L;
+
+	@JsonProperty
+	private Long id;
 
 	@JsonProperty
 	private String rua;
@@ -37,6 +42,10 @@ public class AddressOutput implements TransferObject {
 	@JsonProperty
 	private String complemento;
 
+	public AddressOutput(){
+		super();
+	}
+	
 	public String getRua() {
 		return rua;
 	}
@@ -65,7 +74,12 @@ public class AddressOutput implements TransferObject {
 		return complemento;
 	}
 
+	public Long getId() {
+		return id;
+	}
+
 	public static class Builder {
+		private Long id;
 		private String rua;
 		private String cidade;
 		private String estado;
@@ -73,6 +87,11 @@ public class AddressOutput implements TransferObject {
 		private String cep;
 		private String bairro;
 		private String complemento;
+
+		public Builder id(Long id) {
+			this.id = id;
+			return this;
+		}
 
 		public Builder rua(String rua) {
 			this.rua = rua;
@@ -115,6 +134,7 @@ public class AddressOutput implements TransferObject {
 	}
 
 	private AddressOutput(Builder builder) {
+		this.id = builder.id;
 		this.rua = builder.rua;
 		this.cidade = builder.cidade;
 		this.estado = builder.estado;

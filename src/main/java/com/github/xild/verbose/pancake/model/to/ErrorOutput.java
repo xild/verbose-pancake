@@ -29,6 +29,9 @@ public class ErrorOutput implements TransferObject {
 	@JsonProperty
 	private int httpStatus;
 
+	public ErrorOutput(){
+		super();
+	}
 	public String getErrors() {
 		return error;
 	}

@@ -101,6 +101,42 @@
 						"description": "Internal server error"
 					}
 				}
+			},
+            "delete": {
+				"tags": [
+					"endereço"
+				],
+				"summary": "Deleta um endereco a partir de um ID",
+				"description": "",
+				"operationId": "buscaEndereco",
+				"consumes": [
+					"application/json"
+				],
+				"produces": [
+					"application/json"
+				],
+				"parameters": [{
+					"name": "id",
+					"in": "path",
+					"description": "ID do endereço",
+					"required": true,
+					"type": "String",
+					"format": "int64"
+				}],
+				"responses": {
+					"204": {
+						"description": "Not Found"
+					},
+					"400": {
+						"description": "Bad Request",
+						"schema": {
+							"$ref": "#/definitions/Response"
+						}
+					},
+					"500": {
+						"description": "Internal server error"
+					}
+				}
 			}
 		},
         "/address/": {
@@ -109,6 +145,48 @@
 				    "endereço"
 				],
 				"summary": "Salva um endereço e confirma o CEP digitado",
+				"description": "",
+				"operationId": "address post",
+				"consumes": [
+					"application/json"
+				],
+				"produces": [
+					"application/json"
+				],
+				"parameters": [{
+					"in": "body",
+                        "name": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/AddressInput"
+                        }
+				}],
+				"responses": {
+					"200": {
+						"description": "Success OK",
+						"schema": {
+							"$ref": "#/definitions/AdderssOutput"
+						}
+					},
+					"204": {
+						"description": "Not Found"
+					},
+					"400": {
+						"description": "Bad Request",
+						"schema": {
+							"$ref": "#/definitions/Response"
+						}
+					},
+					"500": {
+						"description": "Internal server error"
+					}
+				}
+			},
+            	"put": {
+				"tags": [
+				    "endereço"
+				],
+				"summary": "Atualiza um endereço e confirma o CEP digitado",
 				"description": "",
 				"operationId": "address post",
 				"consumes": [
@@ -175,7 +253,11 @@
                 "cep"
 			],
 			"properties": {
-				"rua": {
+				"id": {
+					"description": "Id do endereço",
+					"type": "string"
+				},
+                "rua": {
 					"description": "Nome da rua",
 					"type": "string"
 				},
@@ -183,9 +265,13 @@
 					"type": "string",
 					"description": "Nome do bairro"
 				},
+				"número'": {
+					"type": "string",
+					"description": "Número do endereço"
+				},
 				"cidade": {
 					"type": "string",
-					"description": "Nome d cidade"
+					"description": "Nome da cidade, ex: praia grande"
 				},
 				"estado": {
 					"type": "string",
@@ -195,7 +281,7 @@
                     "type" : "string",
                     "description":"Complemento do endereço, ex: apto 13"
                 },
-                  "CEP": {
+                  "cep": {
                     "type" : "string",
                     "description":"Código postal do endereço"
                 }
@@ -206,10 +292,8 @@
 			"type": "object",
 			"required": [
 				"rua",
-				"bairro",
 				"cidade",
 				"estado",
-                "complemento",
                 "numero",
                 "cep"
 			],
@@ -234,9 +318,13 @@
                     "type" : "string",
                     "description":"Complemento do endereço, ex: apto 13"
                 },
-                  "CEP": {
+                  "cep": {
                     "type" : "string",
                     "description":"Código postal do endereço"
+                },
+                  "numero": {
+                    "type" : "string",
+                    "description":"Número do endereço"
                 }
 
 			}

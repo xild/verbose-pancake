@@ -61,32 +61,32 @@ public class SearchZipCodeServicesTest {
 
 	@Test
 	public void givenAValidCepReturnAddressInformation() {
-		Optional<Address> address = getRandomAddress();
-		mockZipCode(anyString(), address);
+		Address address = getRandomAddress();
+		mockZipCode(anyString(), Lists.newArrayList(address));
 
-		Optional<Address> expected = services.searchZipCode(address.get().getZipCode());
+		Optional<Address> expected = services.searchZipCode(address.getZipCode());
 		
-		assertThat(expected.get(), equalTo(address.get()));
+		assertThat(expected.get(), equalTo(address));
 	}
 
 	@Test
 	public void givenACepWithoutAddressRemoveADigitFromRightToLeftUntilFound() {
 		final String zipCode = "00000000";
-		Optional<Address> address = getRandomAddress();
-		address.get().setZipCode(zipCode);
-		mockZipCode(zipCodes, Optional.empty());
-		mockZipCode(zipCode, address);
+		Address address = getRandomAddress();
+		address.setZipCode(zipCode);
+		mockZipCode(zipCodes, Lists.newArrayList());
+		mockZipCode(zipCode, Lists.newArrayList(address));
 
 		Optional<Address> optionalAddress = services.searchZipCode("12345678");
 		
 		Mockito.verify(repository, times(zipCodes.size())).findByZipCode(anyString());
-		assertThat(optionalAddress, equalTo(address));
+		assertThat(optionalAddress.get(), equalTo(address));
 	}
 
 	@Test
 	public void givenACepWithoutAddressRemoveADigitFromRightToLeftUntilNotFound() {
 		Optional<Address> address = Optional.empty();
-		mockZipCode(zipCodes, Optional.empty());
+		mockZipCode(zipCodes, Lists.newArrayList());
 		
 		Optional<Address> optionalAddress = services.searchZipCode("12345678");
 		
@@ -94,16 +94,16 @@ public class SearchZipCodeServicesTest {
 		assertThat(optionalAddress, equalTo(address));
 	}
 
-	private Optional<Address> getRandomAddress() {
-		return Optional.of((Address) TestUtils.generateObject(Address.class));
+	private Address getRandomAddress() {
+		return (Address) TestUtils.generateObject(Address.class);
 	}
 
-	private void mockZipCode(List<String> zipCodes, Optional<Address> expectedReturn) {
+	private void mockZipCode(List<String> zipCodes, List<Address> expectedReturn) {
 		zipCodes.forEach(z -> mockZipCode(z, expectedReturn));
 	}
 	
-	private void mockZipCode(String zipCode, Optional<Address> expectedReturn) {
-		Mockito.when(repository.findByZipCode(zipCode)).thenReturn(expectedReturn);
+	private void mockZipCode(String zipCode, List<Address> expectedReturn) {
+		Mockito.when(repository.findByZipCode(zipCode)).thenReturn(Lists.newArrayList(expectedReturn));
 	}
 
 }

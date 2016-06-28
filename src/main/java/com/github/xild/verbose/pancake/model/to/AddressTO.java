@@ -15,8 +15,12 @@ import com.github.xild.verbose.pancake.model.Address;
  *
  */
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class AddressInput {
-
+public class AddressTO {
+	
+	
+	@JsonProperty(required = false)
+	private Long id;
+	
 	@JsonProperty(required = true)
 	private String rua;
 
@@ -38,11 +42,12 @@ public class AddressInput {
 	@JsonProperty(required = false)
 	private String complemento;
 
-	public AddressInput(){
+	public AddressTO() {
 		super();
 	}
-	
-	public AddressInput(Address address){
+
+	public AddressTO(Address address) {
+		this.id = address.getId();
 		this.rua = address.getStreet();
 		this.numero = address.getAddressNumber();
 		this.cep = address.getZipCode();
@@ -106,6 +111,14 @@ public class AddressInput {
 
 	public void setComplemento(String complemento) {
 		this.complemento = complemento;
+	}
+
+	public Long getId() {
+		return id;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
 	}
 
 }

@@ -18,13 +18,14 @@ import javax.ws.rs.container.Suspended;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
-import com.github.xild.verbose.pancake.client.ZipCodeClient;
 import com.github.xild.verbose.pancake.exception.AddressResourceException;
+import com.github.xild.verbose.pancake.exception.ZipCodeInvalidException;
 import com.github.xild.verbose.pancake.model.Address;
-import com.github.xild.verbose.pancake.model.to.AddressInput;
 import com.github.xild.verbose.pancake.model.to.AddressOutput;
+import com.github.xild.verbose.pancake.model.to.AddressTO;
 import com.github.xild.verbose.pancake.model.to.ErrorOutput;
 import com.github.xild.verbose.pancake.services.AddressServices;
+import com.github.xild.verbose.pancake.utils.JsonUtils;
 
 @Path("/")
 @Produces({ MediaType.APPLICATION_JSON })
@@ -33,32 +34,77 @@ public class AddressResource {
 
 	private AddressServices services;
 
-	private ZipCodeClient client;
-	
 	@Inject
-	public AddressResource(AddressServices services, ZipCodeClient client) {
+	public AddressResource(AddressServices services) {
 		this.services = services;
-		this.client = client;
 	}
 
 	@POST
 	@Path("/address")
-	public void saveAddress(AddressInput input, @Suspended AsyncResponse async) {
-		Response output = client.findAddress(input.getCep());
+	public void saveAddress(AddressTO input, @Suspended AsyncResponse async) {
+		try {
+			Address address = services.saveAddress(input);
 
-		if (output.getStatus() == Response.Status.BAD_REQUEST.getStatusCode()) {
-			ErrorOutput errorOutput = (ErrorOutput) output.getEntity();
-			async.resume(Response.status(BAD_REQUEST).entity(errorOutput).build());
+			AddressOutput output = new AddressOutput.Builder()//
+					.cidade(address.getCity())//
+					.cep(address.getZipCode())//
+					.bairro(address.getNeighborhood()) //
+					.id(address.getId()) //
+					.complemento(address.getAddressDetail())//
+					.numero(address.getAddressNumber())//
+					.estado(address.getState())//
+					.rua(address.getStreet())//
+					.build();
+
+			async.resume(Response.status(Response.Status.CREATED)//
+					.entity(output) //
+					.build());
+			
+		} catch (ZipCodeInvalidException fe) {
+			ErrorOutput errorOutput = JsonUtils.toObject(fe.getResponse().body().toString(), ErrorOutput.class);
+			async.resume(Response.status(BAD_REQUEST)//
+					.entity(errorOutput) //
+					.build());
+			return;
 		}
-		
-		services.saveAddress(input);
-		Response.ok().entity("OK").build();
+
 	}
 
 	@PUT
 	@Path("/address")
-	public void updateAddress(@Suspended AsyncResponse async) {
-		Response.ok().entity("OK").build();
+	public void updateAddress(AddressTO input, @Suspended AsyncResponse async) {
+		try {
+
+			Address address = services.updateAddress(input);
+			AddressOutput output = new AddressOutput.Builder()//
+					.cidade(address.getCity())//
+					.cep(address.getZipCode())//
+					.bairro(address.getNeighborhood()) //
+					.id(address.getId()) //
+					.complemento(address.getAddressDetail())//
+					.numero(address.getAddressNumber())//
+					.estado(address.getState())//
+					.rua(address.getStreet())//
+					.build();
+
+			async.resume(Response.ok().entity(output).build());
+
+		} catch (ZipCodeInvalidException fe) {
+			ErrorOutput errorOutput = JsonUtils.toObject(fe.getResponse().body().toString(), ErrorOutput.class);
+			async.resume(Response.status(BAD_REQUEST)//
+					.entity(errorOutput) //
+					.build());
+			return;
+		} catch (AddressResourceException ae) {
+			ErrorOutput errorOutput = new ErrorOutput.Builder().errors(ae.getLocalizedMessage())//
+					.httpStatus(BAD_REQUEST.getStatusCode())//
+					.message(ae.getMessage()).build();//
+
+			async.resume(Response.status(BAD_REQUEST)//
+					.entity(errorOutput) //
+					.build());
+			return;
+		}
 	}
 
 	@DELETE
@@ -74,6 +120,7 @@ public class AddressResource {
 					.build();
 			async.resume(Response.status(BAD_REQUEST).entity(errorOutput).build());
 		}
+
 		async.resume(Response.status(Response.Status.NO_CONTENT).build());
 	}
 
@@ -86,7 +133,7 @@ public class AddressResource {
 		if (optionalAddress.isPresent()) {
 			Address address = optionalAddress.get();
 			AddressOutput output = new AddressOutput.Builder() //
-					.bairro(address.getNeighborhood()) //
+					.id(address.getId()).bairro(address.getNeighborhood()) //
 					.cidade(address.getCity())//
 					.estado(address.getState())//
 					.rua(address.getStreet())//

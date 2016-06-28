@@ -28,7 +28,7 @@ import org.mockito.runners.MockitoJUnitRunner;
 import com.github.xild.verbose.pancake.client.ZipCodeClient;
 import com.github.xild.verbose.pancake.exception.AddressResourceException;
 import com.github.xild.verbose.pancake.model.Address;
-import com.github.xild.verbose.pancake.model.to.AddressInput;
+import com.github.xild.verbose.pancake.model.to.AddressTO;
 import com.github.xild.verbose.pancake.repository.AddressRepository;
 import com.github.xild.verbose.pancake.services.AddressServices;
 import com.github.xild.verbose.pancake.services.impl.AddressServicesImpl;
@@ -95,7 +95,7 @@ public class AddressServicesTest {
 	@Test
 	public void givenAValidInputInsertAddress(){
 		Address address = getRandomAddress().get();
-		AddressInput input = new AddressInput(address);
+		AddressTO input = new AddressTO(address);
 		when(repository.save(Mockito.any(Address.class))).thenReturn(address);
 		
 		Address expected = services.saveAddress(input);
@@ -107,7 +107,7 @@ public class AddressServicesTest {
 		return Optional.of((Address) TestUtils.generateObject(Address.class));
 	}
 
-	private AddressInput getRandomAddressInput() {
-		return (AddressInput) TestUtils.generateObject(AddressInput.class);
+	private AddressTO getRandomAddressInput() {
+		return (AddressTO) TestUtils.generateObject(AddressTO.class);
 	}
 }

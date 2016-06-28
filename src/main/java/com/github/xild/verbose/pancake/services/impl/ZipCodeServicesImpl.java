@@ -36,7 +36,7 @@ public class ZipCodeServicesImpl implements ZipCodeServices {
 		int zipLength = zipCode.length() - 1;
 		
 		for (int position = zipLength; position >= -1; position--) {
-			address = addressRepository.findByZipCode(zipCode);
+			address = addressRepository.findByZipCode(zipCode).stream().findFirst();
 			if (address.isPresent() || position == -1) {
 				return address;
 			}

@@ -9,17 +9,13 @@ package com.github.xild.verbose.pancake.services.impl;
 import java.util.Optional;
 
 import javax.inject.Inject;
-import javax.ws.rs.core.Response;
 
-import org.eclipse.jetty.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import com.github.xild.verbose.pancake.client.ZipCodeClient;
 import com.github.xild.verbose.pancake.exception.AddressResourceException;
 import com.github.xild.verbose.pancake.model.Address;
-import com.github.xild.verbose.pancake.model.to.AddressInput;
-import com.github.xild.verbose.pancake.model.to.AddressOutput;
+import com.github.xild.verbose.pancake.model.to.AddressTO;
 import com.github.xild.verbose.pancake.repository.AddressRepository;
 import com.github.xild.verbose.pancake.services.AddressServices;
 
@@ -57,9 +53,27 @@ public class AddressServicesImpl implements AddressServices {
 	}
 
 	@Override
-	public Address saveAddress(AddressInput input) {
-		Address address = new Address(input); 
+	public Address saveAddress(AddressTO input) {
+		Address address = new Address(input);
+		validateZipCode(input);
 		return repository.save(address);  
+	}
+
+	private void validateZipCode(AddressTO input) {
+		client.findAddress(input.getCep());
+	}
+
+	@Override
+	public Address updateAddress(AddressTO input) throws AddressResourceException {
+		Optional<Address> optional = findById(input.getId());
+		if (optional.isPresent()) {
+			//check if cep is valid
+			validateZipCode(input);
+			
+			return repository.save(new Address(input));
+		} else {
+			throw new AddressResourceException("Address not found for update");
+		}
 	}
 
 }

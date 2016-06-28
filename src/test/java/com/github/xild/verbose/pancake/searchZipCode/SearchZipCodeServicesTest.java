@@ -44,9 +44,7 @@ public class SearchZipCodeServicesTest {
 			"12345000",
 			"12340000",
 			"12300000",
-			"12000000", 
-			"10000000",
-			"00000000");
+			"12000000");
 
 	@Mock
 	private AddressRepository repository;
@@ -71,7 +69,7 @@ public class SearchZipCodeServicesTest {
 
 	@Test
 	public void givenACepWithoutAddressRemoveADigitFromRightToLeftUntilFound() {
-		final String zipCode = "00000000";
+		final String zipCode = "10000000";
 		Address address = getRandomAddress();
 		address.setZipCode(zipCode);
 		mockZipCode(zipCodes, Lists.newArrayList());
@@ -79,7 +77,7 @@ public class SearchZipCodeServicesTest {
 
 		Optional<Address> optionalAddress = services.searchZipCode("12345678");
 		
-		Mockito.verify(repository, times(zipCodes.size())).findByZipCode(anyString());
+		Mockito.verify(repository, times(8)).findByZipCode(anyString());
 		assertThat(optionalAddress.get(), equalTo(address));
 	}
 
@@ -90,7 +88,7 @@ public class SearchZipCodeServicesTest {
 		
 		Optional<Address> optionalAddress = services.searchZipCode("12345678");
 		
-		Mockito.verify(repository, times(zipCodes.size())).findByZipCode(anyString());
+		Mockito.verify(repository, times(8)).findByZipCode(anyString());
 		assertThat(optionalAddress, equalTo(address));
 	}
 

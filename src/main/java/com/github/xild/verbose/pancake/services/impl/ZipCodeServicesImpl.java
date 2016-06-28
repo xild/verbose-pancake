@@ -34,10 +34,10 @@ public class ZipCodeServicesImpl implements ZipCodeServices {
 	public Optional<Address> searchZipCode(String zipCode) {
 		Optional<Address> address = Optional.empty();
 		int zipLength = zipCode.length() - 1;
-		
-		for (int position = zipLength; position >= -1; position--) {
+
+		for (int position = zipLength; position >= -0; position--) {
 			address = addressRepository.findByZipCode(zipCode).stream().findFirst();
-			if (address.isPresent() || position == -1) {
+			if (address.isPresent()) {
 				return address;
 			}
 

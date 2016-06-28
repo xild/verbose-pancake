@@ -103,6 +103,30 @@ public class AddressServicesTest {
 		assertThat(address, equalTo(expected));
 	}
 	
+	@Test
+	public void givenAValidInputUpdateAddress() throws AddressResourceException{
+		Address address = getRandomAddress().get();
+		AddressTO input = new AddressTO(address);
+		when(repository.findById(anyLong())).thenReturn(Optional.of(address));
+		when(repository.save(Mockito.any(Address.class))).thenReturn(address);
+		
+		Address expected = services.updateAddress(input);
+		
+		assertThat(address, equalTo(expected));
+	}
+	
+	@Test(expected=AddressResourceException.class)
+	public void givenAIdNonExistentForUpdatehrownException() throws AddressResourceException {
+		Address address = getRandomAddress().get();
+		AddressTO input = new AddressTO(address);
+		when(repository.findById(anyLong())).thenReturn(Optional.empty());
+		when(repository.save(Mockito.any(Address.class))).thenReturn(address);
+		
+		Address expected = services.updateAddress(input);
+		
+		assertThat(address, equalTo(expected));
+	}
+	
 	private Optional<Address> getRandomAddress() {
 		return Optional.of((Address) TestUtils.generateObject(Address.class));
 	}

@@ -10,7 +10,8 @@
  
  
 # TESTES
- Para os testes utilizei o Mockito com Junit. 
+ Foquei nos services. 
+ ![screen shot 2016-06-28 at 12 41 33 am](https://cloud.githubusercontent.com/assets/1268884/16403185/fd677b00-3cc8-11e6-8d14-4f9d0c482fde.png)
 # HOW-TO
 - Clone o projeto. 
 - A melhor forma é rodar via docker. (https://www.docker.com/products/docker)
@@ -33,6 +34,15 @@
     - 55550000
     - 77770000
 
+# PÁGINA INICIAL - SWAGGER 
+  ``` 
+  http://localhost:8082/
+  ```
+# HEALTHCHECK :) 
+  ```
+ curl -X GET http://localhost:8082/api/healthcheck
+ "LIVE" 
+ ```
 # BUSCA UM ENDEREÇO COM UM CEP VÁLIDO 
   ```
  curl -X GET --header "Accept: application/json" --header "X-User: swagger" "http://localhost:8082/api/buscaCep/77770000"

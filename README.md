@@ -1,6 +1,6 @@
 # verbose-pancake
 # LIBS
- Springboot + Spring data + Feign + Mockito 
+ Springboot + Spring data + Feign + Mockito + Benas-Generate Random Beans
 # WHY
 
  Simples aplicação com H2DB e alguns ceps que já são inseridos no boot da app. A aplicação responde serviços rests, como a segunda questão falava de 'consultar o serviço de cep' para validar. Utilizei o feign para demonstrar a utilização de um client declarativo que é o Feign.
@@ -12,7 +12,7 @@
  Para os testes utilizei o Mockito com Junit. 
 # HOW-TO
 - Clone o projeto. 
-- A melhor forma é rodar via docker. 
+- A melhor forma é rodar via docker. (https://www.docker.com/products/docker)
   - sh docker.sh
 - Ou... mvn clean package
   - cd target/
